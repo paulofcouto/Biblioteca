@@ -2,7 +2,7 @@
 using Biblioteca.Core.Repository;
 using Microsoft.EntityFrameworkCore;
 
-namespace Biblioteca.Infrastructure.Persistence
+namespace Biblioteca.Infrastructure.Persistence.Repositories
 {
     public class UsuarioRepository : IUsuarioRepository
     {

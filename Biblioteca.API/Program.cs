@@ -1,11 +1,8 @@
 using Biblioteca.Application.Command.CadastrarUsuario;
-using Biblioteca.Application.Services.Implementations;
-using Biblioteca.Application.Services.Interfaces;
 using Biblioteca.Core.Repository;
 using Biblioteca.Infrastructure.Persistence;
+using Biblioteca.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 

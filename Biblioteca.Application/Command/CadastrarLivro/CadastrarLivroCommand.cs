@@ -1,6 +1,8 @@
-﻿namespace Biblioteca.Application.InputModel
+﻿using MediatR;
+
+namespace Biblioteca.Application.Command.CadastrarLivro
 {
-    public class NovoLivroInputModel
+    public class CadastrarLivroCommand : IRequest<int>
     {
         public string Titulo { get; set; }
         public string Autor { get; set; }

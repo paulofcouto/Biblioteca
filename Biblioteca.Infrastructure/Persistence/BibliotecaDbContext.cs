@@ -1,5 +1,6 @@
 ﻿using Biblioteca.Core.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace Biblioteca.Infrastructure.Persistence
 {
@@ -16,26 +17,7 @@ namespace Biblioteca.Infrastructure.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Livro>()
-                .HasKey(t => t.Id);
-
-            modelBuilder.Entity<Usuario>()
-                .HasKey(t => t.Id);
-
-            modelBuilder.Entity<Emprestimo>()
-                .HasKey(t => t.Id);
-
-            modelBuilder.Entity<Emprestimo>()
-                .HasOne(t => t.Usuario)
-                .WithMany(t => t.Emprestimos)
-                .HasForeignKey(t => t.IdUsuario)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Emprestimo>()
-                .HasOne(t => t.Livro)
-                .WithMany(t => t.Emprestimos)
-                .HasForeignKey(t => t.IdLivro)
-                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }
 }

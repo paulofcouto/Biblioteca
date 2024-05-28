@@ -1,9 +1,8 @@
-﻿using Biblioteca.Application.InputModel;
+﻿using Biblioteca.Application.Command.CadastrarLivro;
+using Biblioteca.Application.Command.DeletarLivro;
 using Biblioteca.Application.Queries.ObterLivroPorId;
 using Biblioteca.Application.Queries.ObterTodosLivros;
-using Biblioteca.Application.Services.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Biblioteca.API.Controllers
@@ -45,17 +44,19 @@ namespace Biblioteca.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Cadastrar([FromBody] NovoLivroInputModel inputModel)
+        public IActionResult Cadastrar([FromBody] CadastrarLivroCommand command)
         {
-            var _id = _livroService.CadastrarLivro(inputModel);
+            var _id = _mediator.Send(command);
 
-            return CreatedAtAction(nameof(ObterPorId), new { id = _id }, inputModel);
+            return CreatedAtAction(nameof(ObterPorId), new { id = _id }, command);
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            _livroService.RemoverLivro(id);
+            var command = new DeletarLivroCommand(id);
+
+            _mediator.Send(command);
 
             return NoContent();
         }
