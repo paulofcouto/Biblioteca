@@ -8,7 +8,7 @@
             IdLivro = idLivro;
             DataDeRetirada = DateTime.Now;
 
-            if(dataDeDevolucaoLimite == default)
+            if(dataDeDevolucaoLimite != default)
             {
                 DataDeDevolucaoLimite = dataDeDevolucaoLimite;
             }
@@ -19,7 +19,9 @@
             
         }
 
+        public Usuario Usuario { get; private set; }
         public int IdUsuario { get; private set; }
+        public Livro Livro { get; private set; }
         public int IdLivro { get; private set; }
         public DateTime DataDeRetirada { get; private set; }
         public DateTime DataDeDevolucaoLimite { get; private set; }

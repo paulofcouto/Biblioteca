@@ -1,5 +1,7 @@
-﻿using Biblioteca.Application.InputModel;
-using Biblioteca.Application.Services.Interfaces;
+﻿using Biblioteca.Application.Command.CadastrarEmprestimo;
+using Biblioteca.Application.Command.DevolverLivro;
+using Biblioteca.Application.Queries.ObterTodosEmprestimos;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Biblioteca.API.Controllers
@@ -8,34 +10,37 @@ namespace Biblioteca.API.Controllers
     [ApiController]
     public class EmprestimosController : ControllerBase
     {
-        private readonly IEmprestimoService _emprestimoService;
+        private readonly IMediator _mediator;
 
-        public EmprestimosController(IEmprestimoService emprestimoService)
+        public EmprestimosController(IMediator mediator)
         {
-            _emprestimoService = emprestimoService;
-        }
-
-
-        [HttpPost]
-        public IActionResult Cadastrar([FromBody] NovoEmprestimoInputModel inputModel)
-        {
-            var _id = _emprestimoService.CadastrarEmprestimo(inputModel);
-
-            return NoContent();
+            _mediator = mediator;
         }
 
         [HttpGet]
         public IActionResult ObterTodos([FromQuery] string? query = null)
         {
-            var emprestimos = _emprestimoService.ObterTodosEmprestimos(query);
+            var command = new ObterTodosEmprestimosQuery(query);
+
+            var emprestimos = _mediator.Send(command);
 
             return Ok(emprestimos);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Cadastrar([FromBody] CadastrarEmprestimoCommand command)
+        {
+            await _mediator.Send(command);
+
+            return NoContent();
         }
 
         [HttpPut("{id}/devolver")]
         public IActionResult Devolver(int id)
         {
-            _emprestimoService.DevolverLivro(id);
+            var command = new DevolverLivroCommand(id);
+
+            _mediator.Send(command);
 
             return NoContent();
         }

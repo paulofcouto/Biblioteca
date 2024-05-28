@@ -1,5 +1,9 @@
 ﻿using Biblioteca.Application.InputModel;
+using Biblioteca.Application.Queries.ObterLivroPorId;
+using Biblioteca.Application.Queries.ObterTodosLivros;
 using Biblioteca.Application.Services.Interfaces;
+using MediatR;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Biblioteca.API.Controllers
@@ -8,17 +12,19 @@ namespace Biblioteca.API.Controllers
     [ApiController]
     public class LivrosController : ControllerBase
     {
-        private readonly ILivroService _livroService;
+        private readonly IMediator _mediator;
 
-        public LivrosController(ILivroService livroService)
+        public LivrosController(IMediator mediator)
         {
-            _livroService = livroService;
+            _mediator = mediator;
         }
 
         [HttpGet("{id}")]
         public IActionResult ObterPorId(int id)
         {
-            var livro = _livroService.ObterPorId(id);
+            var command = new ObterLivroPorIdQuery(id);
+
+            var livro = _mediator.Send(command);
 
             if(livro == null)
             {
@@ -31,7 +37,9 @@ namespace Biblioteca.API.Controllers
         [HttpGet]
         public IActionResult ObterTodos([FromQuery] string? query = null)
         {
-            var livros = _livroService.ObterTodos(query);
+            var command = new ObterTodosLivrosQuery(query);
+
+            var livros = _mediator.Send(command);
 
             return Ok(livros);
         }

@@ -2,6 +2,7 @@
 using Biblioteca.Application.Services.Interfaces;
 using Biblioteca.Application.ViewModel;
 using Biblioteca.Core.Entities;
+using Biblioteca.Infrastructure.Persistence;
 
 namespace Biblioteca.Application.Services.Implementations
 {

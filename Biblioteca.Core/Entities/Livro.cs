@@ -11,6 +11,7 @@ namespace Biblioteca.Core.Entities
             ISBN = iSBN;
             AnoDePublicacao = anoDePublicacao;
             Status = StatusLivroEnum.Disponivel;
+            Emprestimos = new List<Emprestimo> { };
         }
 
         public string Titulo { get; private set; }
@@ -18,8 +19,9 @@ namespace Biblioteca.Core.Entities
         public string ISBN { get; private set; }
         public int AnoDePublicacao { get; private set; }
         public StatusLivroEnum Status { get; private set; }
+        public List<Emprestimo> Emprestimos { get; private set; }
 
-        public void DevolverLivro()
+        public void MarcarDisponivel()
         {
             Status = StatusLivroEnum.Disponivel;
         }

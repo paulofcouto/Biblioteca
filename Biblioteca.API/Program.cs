@@ -1,6 +1,11 @@
+using Biblioteca.Application.Command.CadastrarUsuario;
 using Biblioteca.Application.Services.Implementations;
 using Biblioteca.Application.Services.Interfaces;
+using Biblioteca.Core.Repository;
+using Biblioteca.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,14 +16,17 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<ILivroService, LivroService>();
-builder.Services.AddScoped<IEmprestimoService, EmprestimoService>();
-builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<ILivroRepository, LivroRepository>();
+builder.Services.AddScoped<IEmprestimoRepository, EmprestimoRepository>();
 
 builder.Services.AddDbContext<BibliotecaDbContext>(options => 
 {
     options.UseInMemoryDatabase("BibliotecaInMemory");
 });
+
+builder.Services.AddMediatR(t => t.RegisterServicesFromAssembly(typeof(CadastrarUsuarioCommandHandler).Assembly));
+
 
 var app = builder.Build();
 

@@ -1,5 +1,6 @@
-﻿using Biblioteca.Application.InputModel;
-using Biblioteca.Application.Services.Interfaces;
+﻿using Biblioteca.Application.Command.CadastrarUsuario;
+using Biblioteca.Application.Queries.ObterTodosUsuarios;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Biblioteca.API.Controllers
@@ -8,25 +9,27 @@ namespace Biblioteca.API.Controllers
     [ApiController]
     public class UsuariosController : ControllerBase
     {
-        private readonly IUsuarioService _usuarioService;
+        private readonly IMediator _mediator;
 
-        public UsuariosController(IUsuarioService usuarioService)
+        public UsuariosController(IMediator mediator)
         {
-            _usuarioService = usuarioService;
+            _mediator = mediator;
         }
 
         [HttpPost]
-        public IActionResult Cadastrar([FromBody] NovoUsuarioInputModel inputModel)
+        public async Task<IActionResult> Cadastrar([FromBody] CadastrarUsuarioCommand command)
         {
-            var _id = _usuarioService.CadastrarUsuario(inputModel);
+            await _mediator.Send(command);
 
             return NoContent();
         }
 
         [HttpGet]
-        public IActionResult ObterTodos([FromQuery] string? query = null)
+        public async Task<IActionResult> ObterTodos([FromQuery] string? query = null)
         {
-            var usuarios = _usuarioService.ObterTodosUsuarios(query);
+            var command = new ObterTodosUsuariosQuery(query);
+
+            var usuarios = await _mediator.Send(command);
 
             return Ok(usuarios);
         }
