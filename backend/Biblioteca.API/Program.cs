@@ -27,10 +27,13 @@ builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<ILivroRepository, LivroRepository>();
 builder.Services.AddScoped<IEmprestimoRepository, EmprestimoRepository>();
 
-builder.Services.AddDbContext<BibliotecaDbContext>(options => 
-{
-    options.UseInMemoryDatabase("BibliotecaInMemory");
-});
+
+var configuration = builder.Configuration.GetConnectionString("DefaultConnection");
+
+builder.Services.AddDbContext<BibliotecaDbContext>(
+    options => options.UseSqlServer(configuration, t => t.MigrationsAssembly("Biblioteca.Infrastructure"))
+);
+
 
 builder.Services.AddMediatR(t => t.RegisterServicesFromAssembly(typeof(CadastrarUsuarioCommandHandler).Assembly));
 

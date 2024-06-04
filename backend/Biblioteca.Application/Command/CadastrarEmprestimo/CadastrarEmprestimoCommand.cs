@@ -11,6 +11,6 @@ namespace Biblioteca.Application.Command.CadastrarEmprestimo
     {
         public int IdUsuario { get; set; }
         public int IdLivro { get; set; }
-        public DateTime DataDeDevoluçãoLimite { get; set; }
+        public DateTime DataDeDevolucaoLimite { get; set; }
     }
 }

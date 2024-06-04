@@ -15,13 +15,31 @@ namespace Biblioteca.Infrastructure.Persistence.Repositories
 
         public async Task CadastrarAssincrono(Emprestimo emprestimo)
         {
+            // Verificando se o LivroId existe
+            var livroExiste = await _dbContext.Livros.AnyAsync(l => l.Id == emprestimo.IdLivro);
+            if (!livroExiste)
+            {
+                throw new Exception($"LivroId {emprestimo.IdLivro} não existe.");
+            }
+
+            // Verificando se o UsuarioId existe
+            var usuarioExiste = await _dbContext.Usuarios.AnyAsync(u => u.Id == emprestimo.IdUsuario);
+            if (!usuarioExiste)
+            {
+                throw new Exception($"UsuarioId {emprestimo.IdUsuario} não existe.");
+            }
+
             await _dbContext.Emprestimos.AddAsync(emprestimo);
             await _dbContext.SaveChangesAsync();
         }
 
         public async Task<List<Emprestimo>> ObterTodosAssincrono(string query)
         {
-            var emprestimos = await _dbContext.Emprestimos.AsNoTracking().ToListAsync();
+            var emprestimos = await _dbContext.Emprestimos
+                .Include(e => e.Usuario)        
+                .Include(e => e.Livro)
+                .AsNoTracking()
+                .ToListAsync();
 
             return emprestimos;
         }

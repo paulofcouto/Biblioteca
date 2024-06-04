@@ -19,7 +19,7 @@ namespace Biblioteca.Application.Command.CadastrarEmprestimo
 
         public async Task<Unit> Handle(CadastrarEmprestimoCommand request, CancellationToken cancellationToken)
         {
-            var emprestimo = new Emprestimo(request.IdUsuario, request.IdLivro, request.DataDeDevoluçãoLimite);
+            var emprestimo = new Emprestimo(request.IdUsuario, request.IdLivro, request.DataDeDevolucaoLimite);
             
             await _emprestimoRepository.CadastrarAssincrono(emprestimo);
 

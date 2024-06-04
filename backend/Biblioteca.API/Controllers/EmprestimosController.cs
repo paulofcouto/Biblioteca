@@ -18,11 +18,11 @@ namespace Biblioteca.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult ObterTodos([FromQuery] string? query = null)
+        public async Task<IActionResult> ObterTodos([FromQuery] string? query = null)
         {
             var command = new ObterTodosEmprestimosQuery(query);
 
-            var emprestimos = _mediator.Send(command);
+            var emprestimos = await _mediator.Send(command);
 
             return Ok(emprestimos);
         }
@@ -36,11 +36,11 @@ namespace Biblioteca.API.Controllers
         }
 
         [HttpPut("{id}/devolver")]
-        public IActionResult Devolver(int id)
+        public async Task<IActionResult> Devolver(int id)
         {
             var command = new DevolverLivroCommand(id);
 
-            _mediator.Send(command);
+            await _mediator.Send(command);
 
             return NoContent();
         }

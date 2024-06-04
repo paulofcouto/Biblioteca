@@ -11,3 +11,76 @@ body {
     height : 100%;
     width : 100%;
 }
+
+h1 {
+    margin-bottom: 0.5em;
+}
+
+h3 {
+    margin-bottom: 15px;
+}
+
+.modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.conteudo-modal {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 4px;
+    width: 300px;
+    max-width: 100%;
+}
+
+.botao-adicionar {
+    position: fixed;
+    bottom: 2em;
+    right: 2em;
+    width: 50px;
+    height: 50px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 24px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.botao-adicionar:hover,
+.botao-adicionar:focus {
+    background-color: #0056b3;
+    outline: none;
+}
+
+.botao-padrao {
+    padding: 0.7em;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.botao-padrao:hover {
+    background-color: #0056b3;
+}
+
+.campo-cadastro {
+    margin-bottom: 20px;
+}
+
+form {
+    max-width: 600px;
+    margin: auto;
+    background: #f9f9f9;
+    border-radius: 5px;
+}

@@ -19,11 +19,11 @@ namespace Biblioteca.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult ObterPorId(int id)
+        public async Task<IActionResult> ObterPorId(int id)
         {
             var command = new ObterLivroPorIdQuery(id);
 
-            var livro = _mediator.Send(command);
+            var livro = await _mediator.Send(command);
 
             if(livro == null)
             {
@@ -34,29 +34,29 @@ namespace Biblioteca.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult ObterTodos([FromQuery] string? query = null)
+        public async Task<IActionResult> ObterTodos([FromQuery] string? query = null)
         {
             var command = new ObterTodosLivrosQuery(query);
 
-            var livros = _mediator.Send(command);
+            var livros = await _mediator.Send(command);
 
             return Ok(livros);
         }
 
         [HttpPost]
-        public IActionResult Cadastrar([FromBody] CadastrarLivroCommand command)
+        public async Task<IActionResult> Cadastrar([FromBody] CadastrarLivroCommand command)
         {
-            var _id = _mediator.Send(command);
+            var _id = await _mediator.Send(command);
 
             return CreatedAtAction(nameof(ObterPorId), new { id = _id }, command);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var command = new DeletarLivroCommand(id);
 
-            _mediator.Send(command);
+            await _mediator.Send(command);
 
             return NoContent();
         }
