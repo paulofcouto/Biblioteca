@@ -7,17 +7,15 @@
                     <th>Livro</th>
                     <th>Usuário</th>
                     <th>Data de Devolução</th>
-                    <th>Ações</th>
+                    <th style="width:100px">Ações</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="emprestimo in emprestimos" :key="emprestimo.id">
-                    <td>{{ emprestimo.livro }}</td>
-                    <td>{{ emprestimo.usuario }}</td>
-                    <td>{{ emprestimo.DataDeDevolucaoLimite }}</td>
-                    <td>
-                        <button @click="devolverEmprestimo(emprestimo.id)">Devolver</button>
-                    </td>
+                    <td>{{ emprestimo.tituloLivro }}</td>
+                    <td>{{ emprestimo.nomeUsuario }}</td>
+                    <td>{{ emprestimo.dataDeDevolucaoLimite }}</td>
+                    <td><span class="devolver-livro" @click="devolverEmprestimo(emprestimo.id)"><i class="fa fa-undo" aria-hidden="true"></i></span></td>
                 </tr>
             </tbody>
         </table>
@@ -32,19 +30,19 @@
                 <form @submit.prevent="cadastrarEmprestimo">
                     <div class="campo-cadastro">
                         <label for="livro">Livro:</label>
-                        <select v-model="novoEmprestimo.livro" required>
+                        <select v-model="novoEmprestimo.idLivro" required>
                             <option v-for="livro in livros" :key="livro.id" :value="livro.id">{{ livro.titulo }}</option>
                         </select>
                     </div>
                     <div class="campo-cadastro">
                         <label for="usuario">Usuário:</label>
-                        <select v-model="novoEmprestimo.usuario" required>
+                        <select v-model="novoEmprestimo.idUsuario" required>
                             <option v-for="usuario in usuarios" :key="usuario.id" :value="usuario.id">{{ usuario.nome }}</option>
                         </select>
                     </div>
                     <div class="campo-cadastro">
-                        <label for="DataDeDevolucaoLimite">Data de Empréstimo:</label>
-                        <input type="date" v-model="novoEmprestimo.DataDeDevolucaoLimite"/>
+                        <label for="dataDeDevolucaoLimite">Data de Empréstimo:</label>
+                        <input type="date" v-model="novoEmprestimo.dataDeDevolucaoLimite"/>
                     </div>
                     <button class="botao-padrao" type="submit">Cadastrar</button>
                 </form>
@@ -67,9 +65,9 @@
                 livros: [],
                 modalAberta: false,
                 novoEmprestimo: {
-                    livro: '',
-                    usuario: '',
-                    DataDeDevolucaoLimite: ''
+                    idLivro: '', 
+                    idUsuario: '',
+                    dataDeDevolucaoLimite: ''
                 }
             };
         },
@@ -112,12 +110,17 @@
             },
             async cadastrarEmprestimo() {
                 try {
+                    console.log(this.novoEmprestimo.IdLivro);
+                    console.log(this.novoEmprestimo);
+                    
                     await emprestimosService.cadastrar(this.novoEmprestimo);
+                   
                     this.fecharModal();
+                    
                     this.novoEmprestimo = {
-                        livro: '',
-                        usuario: '',
-                        DataDeDevolucaoLimite: ''
+                        idLivro: '',
+                        idUsuario: '',
+                        dataDeDevolucaoLimite: ''
                     };
                     await this.carregarEmprestimos();
                 }
@@ -143,30 +146,3 @@
         }
     };
 </script>
-
-<style>
-
-
-    input {
-        border: 1px solid #CCCCCC;
-        padding: .5em;
-        font-size: 1em;
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    .close {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        cursor: pointer;
-    }
-
-    select {
-        border: 1px solid #CCCCCC;
-        padding: .5em;
-        font-size: 1em;
-        width: 100%;
-        box-sizing: border-box;
-    }
-</style>

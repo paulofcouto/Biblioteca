@@ -2,15 +2,16 @@
 <template>
     <div>
         <h1>Lista de Livros</h1>
-        <div class="conteudo-tabela">
+        <div>
             <table>
-                <thead class="cabecalho-tabela">
+                <thead>
                     <tr>
                         <th>Título</th>
                         <th>Autor</th>
                         <th>ISBN</th>
                         <th>Ano de Publicação</th>
-                        <th>Ações</th>
+                        <th>Status</th>
+                        <th style="width:100px">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -19,7 +20,8 @@
                         <td>{{ livro.autor }}</td>
                         <td>{{ livro.isbn }}</td>
                         <td>{{ livro.anoDePublicacao }}</td>
-                        <td><button @click="deletarLivro(livro.id)">Deletar</button></td>
+                        <td>{{ livro.status }}</td>
+                        <td><span class="icone-deletar" @click="deletarLivro(livro.id)"><i class="fas fa-trash-alt"></i></span></td>
                     </tr>
                 </tbody>
             </table>
@@ -28,9 +30,9 @@
         <button class="botao-adicionar" @click="abrirModal">+</button>
 
         <!-- Modal para Cadastrar Livro -->
-        <div v-if="modalAberta" class="modal">
+        <div v-if="modalLivroAberta" class="modal">
             <div class="conteudo-modal">
-                <div class="close" @click="fecharModal">&times;</div>
+                <span class="close" @click="fecharModal">&times;</span>
                 <h3>Cadastrar Livro</h3>
                 <form @submit.prevent="cadastrarLivro">
                     <div class="campo-cadastro">
@@ -47,7 +49,7 @@
                     </div>
                     <div class="campo-cadastro">
                         <label for="anoDePublicacao">Ano de Publicação:</label>
-                        <input type="number" v-model="novoLivro.anoDePublicacao" required />
+                        <input type="number" v-model.number="novoLivro.anoDePublicacao" @input="validarAnoDePublicacao" required />
                     </div>
                     <button class="botao-padrao" type="submit">Cadastrar</button>
                 </form>
@@ -65,12 +67,13 @@
         data() {
             return {
                 livros: [],
-                modalAberta: false,
+                modalLivroAberta: false,
                 novoLivro: {
                     titulo: '',
                     autor: '',
                     isbn: '',
-                    anoDePublicacao: 0
+                    anoDePublicacao: 0,
+                    status : ''
                 }
             };
         },
@@ -101,10 +104,10 @@
                 }
             },
             abrirModal() {
-                this.modalAberta = true;
+                this.modalLivroAberta = true;
             },
             fecharModal() {
-                this.modalAberta = false;
+                this.modalLivroAberta = false;
             },
             async cadastrarLivro() {
                 try {
@@ -120,38 +123,20 @@
                 } catch (error) {
                     console.error('Erro ao cadastrar livro:', error);
                 }
+            },
+            validarAnoDePublicacao() {
+                if (this.novoLivro.anoDePublicacao < 0) {
+                    this.novoLivro.anoDePublicacao = 0;
+                }
             }
         }
     };
 </script>
 
 <style>
-    .close {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        cursor: pointer;
-    }
-
-    table {
-        width: calc(100% - 8em);
-        margin: 8em 4em;
-        border-collapse: collapse;
-    }
-
-    thead th, tbody td {
-        border: 1px solid #ddd;
-        padding: 10px;
-        text-align: left;
-    }
-
-    thead th {
-        background-color: #f2f2f2;
-    }
-
-    .cabecalho-tabela {
-        border: none;
-        border: 2px solid gray;
-        border-top-right-radius: 20px;
+    th.acoes,
+    td.acoes {
+        text-align: center;
+        width: 100px; /* Defina uma largura fixa ou ajuste conforme necessário */
     }
 </style>

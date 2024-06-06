@@ -13,8 +13,8 @@ namespace Biblioteca.Infrastructure.Persistence.Configurations
 
             builder
                 .HasMany(t => t.Emprestimos)
-                .WithOne()
-                .HasForeignKey(t => t.IdLivro)
+                .WithOne(t => t.Livro)
+                .HasForeignKey(t => t.LivroId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

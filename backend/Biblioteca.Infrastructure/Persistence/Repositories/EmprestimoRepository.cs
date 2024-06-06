@@ -15,20 +15,19 @@ namespace Biblioteca.Infrastructure.Persistence.Repositories
 
         public async Task CadastrarAssincrono(Emprestimo emprestimo)
         {
-            // Verificando se o LivroId existe
-            var livroExiste = await _dbContext.Livros.AnyAsync(l => l.Id == emprestimo.IdLivro);
-            if (!livroExiste)
+            var livro = await _dbContext.Livros.SingleOrDefaultAsync(l => l.Id == emprestimo.LivroId);
+            if (livro == null)
             {
-                throw new Exception($"LivroId {emprestimo.IdLivro} não existe.");
+                throw new Exception($"LivroId {emprestimo.LivroId} não existe.");
             }
 
-            // Verificando se o UsuarioId existe
-            var usuarioExiste = await _dbContext.Usuarios.AnyAsync(u => u.Id == emprestimo.IdUsuario);
+            var usuarioExiste = await _dbContext.Usuarios.AnyAsync(u => u.Id == emprestimo.UsuarioId);
             if (!usuarioExiste)
             {
-                throw new Exception($"UsuarioId {emprestimo.IdUsuario} não existe.");
+                throw new Exception($"UsuarioId {emprestimo.UsuarioId} não existe.");
             }
 
+            livro.MarcarEmprestado();
             await _dbContext.Emprestimos.AddAsync(emprestimo);
             await _dbContext.SaveChangesAsync();
         }

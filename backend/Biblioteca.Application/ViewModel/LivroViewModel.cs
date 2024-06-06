@@ -11,7 +11,7 @@ namespace Biblioteca.Application.ViewModel
             Autor = autor;
             ISBN = iSBN;
             AnoDePublicacao = anoDePublicacao;
-            Status = status;
+            Status = status.ObterDisplayName();
         }
 
         public int Id { get; private set; }
@@ -19,6 +19,6 @@ namespace Biblioteca.Application.ViewModel
         public string Autor { get; private set; }
         public string ISBN { get; private set; }
         public int AnoDePublicacao { get; private set; }
-        public StatusLivroEnum Status { get; private set; }
+        public string Status { get; private set; }
     }
 }

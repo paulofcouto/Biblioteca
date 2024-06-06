@@ -2,10 +2,10 @@
 {
     public class Emprestimo : BaseEntity
     {
-        public Emprestimo(int idUsuario, int idLivro, DateTime dataDeDevolucaoLimite)
+        public Emprestimo(int usuarioId, int livroId, DateTime dataDeDevolucaoLimite)
         {
-            IdUsuario = idUsuario;
-            IdLivro = idLivro;
+            UsuarioId = usuarioId;
+            LivroId = livroId;
             DataDeRetirada = DateTime.Now;
 
             if(dataDeDevolucaoLimite != default)
@@ -20,9 +20,9 @@
         }
 
         public Usuario Usuario { get; private set; }
-        public int IdUsuario { get; private set; }
+        public int UsuarioId { get; private set; }
         public Livro Livro { get; private set; }
-        public int IdLivro { get; private set; }
+        public int LivroId { get; private set; }
         public DateTime DataDeRetirada { get; private set; }
         public DateTime DataDeDevolucaoLimite { get; private set; }
         public DateTime DataDeDevolucao { get; private set; }

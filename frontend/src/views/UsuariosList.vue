@@ -2,9 +2,9 @@
 <template>
     <div>
         <h1>Lista de Usuários</h1>
-        <div class="conteudo-tabela">
+        <div>
             <table>
-                <thead class="cabecalho-tabela">
+                <thead>
                     <tr>
                         <th>Nome</th>
                         <th>Email</th>
@@ -97,12 +97,3 @@
         }
     };
 </script>
-
-<style>
-    .close {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        cursor: pointer;
-    }
-</style>

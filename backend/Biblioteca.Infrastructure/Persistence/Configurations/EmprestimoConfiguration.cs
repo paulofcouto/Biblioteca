@@ -14,13 +14,13 @@ namespace Biblioteca.Infrastructure.Persistence.Configurations
             builder
                 .HasOne(t => t.Usuario)
                 .WithMany(t => t.Emprestimos)
-                .HasForeignKey(t => t.IdUsuario)
+                .HasForeignKey(t => t.UsuarioId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder
                 .HasOne(t => t.Livro)
                 .WithMany(t => t.Emprestimos)
-                .HasForeignKey(t => t.IdLivro)
+                .HasForeignKey(t => t.LivroId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

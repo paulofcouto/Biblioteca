@@ -14,6 +14,8 @@ body {
 
 h1 {
     margin-bottom: 0.5em;
+    text-align: left;
+    padding-left : 2em;
 }
 
 h3 {
@@ -33,6 +35,7 @@ h3 {
 }
 
 .conteudo-modal {
+    position: relative;
     background-color: #fff;
     padding: 20px;
     border-radius: 4px;
@@ -84,3 +87,80 @@ form {
     background: #f9f9f9;
     border-radius: 5px;
 }
+
+table {
+    width: calc(100% - 8em);
+    margin: 1em 4em;
+    border-collapse: collapse;
+
+}
+
+thead th {
+    border: none;
+    padding: 10px;
+    text-align: center
+}
+
+tbody td {
+    border: none;
+    padding: 10px;
+    text-align: left;
+}
+
+thead th {
+    background-color: #f2f2f2;
+}
+
+.icone-deletar {
+    cursor: pointer;
+    color: red;
+    position: relative;
+    z-index: 10;
+}
+
+.devolver-livro {
+    cursor: pointer;
+    color: mediumseagreen;
+    position: relative;
+    z-index: 10;
+}
+
+.icone-deletar:hover {
+    color: red;
+}
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 40px;
+    cursor: pointer;
+}
+
+input {
+    border: 1px solid #CCCCCC;
+    padding: .5em;
+    font-size: 1em;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+select {
+    border: 1px solid #CCCCCC;
+    padding: .5em;
+    font-size: 1em;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+

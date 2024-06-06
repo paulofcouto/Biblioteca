@@ -25,5 +25,10 @@ namespace Biblioteca.Core.Entities
         {
             Status = StatusLivroEnum.Disponivel;
         }
+
+        public void MarcarEmprestado()
+        {
+            Status = StatusLivroEnum.Emprestado;
+        }
     }
 }

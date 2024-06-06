@@ -14,8 +14,8 @@ namespace Biblioteca.Infrastructure.Persistence.Configurations
 
             builder
                 .HasMany(t => t.Emprestimos)
-                .WithOne()
-                .HasForeignKey(t => t.IdUsuario)
+                .WithOne(t => t.Usuario)
+                .HasForeignKey(t => t.UsuarioId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }
