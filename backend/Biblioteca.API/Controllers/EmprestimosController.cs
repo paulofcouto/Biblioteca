@@ -1,5 +1,6 @@
 ﻿using Biblioteca.Application.Command.CadastrarEmprestimo;
 using Biblioteca.Application.Command.DevolverLivro;
+using Biblioteca.Application.Queries.ObterLivrosDisponiveis;
 using Biblioteca.Application.Queries.ObterTodosEmprestimos;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -18,9 +19,19 @@ namespace Biblioteca.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ObterTodos([FromQuery] string? query = null)
+        public async Task<IActionResult> ObterTodos()
         {
-            var command = new ObterTodosEmprestimosQuery(query);
+            var command = new ObterTodosEmprestimosQuery();
+
+            var emprestimos = await _mediator.Send(command);
+
+            return Ok(emprestimos);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ObterLivrosDisponiveis()
+        {
+            var command = new ObterLivrosDisponiveisQuery();
 
             var emprestimos = await _mediator.Send(command);
 

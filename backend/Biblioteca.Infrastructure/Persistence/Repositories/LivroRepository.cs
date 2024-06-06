@@ -35,6 +35,13 @@ namespace Biblioteca.Infrastructure.Persistence.Repositories
             return livros;
         }
 
+        public async Task<List<Livro>> ObterTodosDisponiveisAssincrono()
+        {
+            var livros = await _dbContext.Livros.AsNoTracking().Where(t => t.Status == Core.Enum.StatusLivroEnum.Disponivel).ToListAsync();
+
+            return livros;
+        }
+
         public async Task RemoverLivroAssincrono(int id)
         {
             var livro = await _dbContext.Livros.SingleOrDefaultAsync(p => p.Id == id);

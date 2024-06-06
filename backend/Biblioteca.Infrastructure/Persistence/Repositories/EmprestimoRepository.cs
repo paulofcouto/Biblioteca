@@ -32,7 +32,7 @@ namespace Biblioteca.Infrastructure.Persistence.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<List<Emprestimo>> ObterTodosAssincrono(string query)
+        public async Task<List<Emprestimo>> ObterTodosAssincrono()
         {
             var emprestimos = await _dbContext.Emprestimos
                 .Include(e => e.Usuario)        

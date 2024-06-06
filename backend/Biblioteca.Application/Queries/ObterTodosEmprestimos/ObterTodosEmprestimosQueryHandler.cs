@@ -14,12 +14,7 @@ namespace Biblioteca.Application.Queries.ObterTodosEmprestimos
 
         public async Task<List<EmprestimoViewModel>> Handle(ObterTodosEmprestimosQuery request, CancellationToken cancellationToken)
         {
-            var emprestimos = await _emprestimoRepository.ObterTodosAssincrono(request.Query);
-
-            if (!string.IsNullOrWhiteSpace(request.Query))
-            {
-                //TODO: montar a lógica para filtrar a query
-            }
+            var emprestimos = await _emprestimoRepository.ObterTodosAssincrono();
 
             var emprestimosViewModel = emprestimos.Select(t => new EmprestimoViewModel(t.Usuario.Nome, t.Livro.Titulo, t.DataDeRetirada, t.DataDeDevolucaoLimite, t.DataDeDevolucao)).ToList();
 
