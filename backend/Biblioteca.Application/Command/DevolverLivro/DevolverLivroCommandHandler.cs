@@ -1,15 +1,9 @@
 ﻿using Biblioteca.Core.Repository;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Biblioteca.Application.Command.DevolverLivro
 {
-    public class DevolverLivroCommandHandler : IRequestHandler<DevolverLivroCommand, Unit>
+    public class DevolverLivroCommandHandler : IRequestHandler<DevolverLivroCommand, string>
     {
         private readonly IEmprestimoRepository _emprestimoRepository;
         public DevolverLivroCommandHandler(IEmprestimoRepository emprestimoRepository)
@@ -17,11 +11,11 @@ namespace Biblioteca.Application.Command.DevolverLivro
             _emprestimoRepository = emprestimoRepository;
         }
 
-        public async Task<Unit> Handle(DevolverLivroCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(DevolverLivroCommand request, CancellationToken cancellationToken)
         {
-            await _emprestimoRepository.DevolverLivroAssincrono(request.Id);
+            var mensagem = await _emprestimoRepository.DevolverLivroAssincrono(request.Id);
 
-            return Unit.Value;
+            return mensagem;
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Biblioteca.API.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet]
+        [HttpGet("ObterTodos")]
         public async Task<IActionResult> ObterTodos()
         {
             var command = new ObterTodosEmprestimosQuery();
@@ -28,7 +28,7 @@ namespace Biblioteca.API.Controllers
             return Ok(emprestimos);
         }
 
-        [HttpGet]
+        [HttpGet("ObterLivrosDisponiveis")]
         public async Task<IActionResult> ObterLivrosDisponiveis()
         {
             var command = new ObterLivrosDisponiveisQuery();
@@ -51,9 +51,9 @@ namespace Biblioteca.API.Controllers
         {
             var command = new DevolverLivroCommand(id);
 
-            await _mediator.Send(command);
+            var resposta = await _mediator.Send(command);
 
-            return NoContent();
+            return Ok(resposta);
         }
     }
 }

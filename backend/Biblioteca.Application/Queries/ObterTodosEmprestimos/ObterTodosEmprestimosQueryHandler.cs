@@ -16,7 +16,7 @@ namespace Biblioteca.Application.Queries.ObterTodosEmprestimos
         {
             var emprestimos = await _emprestimoRepository.ObterTodosAssincrono();
 
-            var emprestimosViewModel = emprestimos.Select(t => new EmprestimoViewModel(t.Usuario.Nome, t.Livro.Titulo, t.DataDeRetirada, t.DataDeDevolucaoLimite, t.DataDeDevolucao)).ToList();
+            var emprestimosViewModel = emprestimos.Select(t => new EmprestimoViewModel(t.Usuario.Nome, t.Livro.Titulo, t.DataDeRetirada, t.DataDeDevolucaoLimite, t.DataDeDevolucao, t.Id)).ToList();
 
             return emprestimosViewModel;
         }

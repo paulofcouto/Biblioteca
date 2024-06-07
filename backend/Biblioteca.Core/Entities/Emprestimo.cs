@@ -6,6 +6,7 @@
         {
             UsuarioId = usuarioId;
             LivroId = livroId;
+
             DataDeRetirada = DateTime.Now;
 
             if(dataDeDevolucaoLimite != default)

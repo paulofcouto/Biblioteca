@@ -6,6 +6,6 @@ namespace Biblioteca.Core.Repository
     {
         Task CadastrarAssincrono(Emprestimo emprestimo);
         Task<List<Emprestimo>> ObterTodosAssincrono();
-        Task DevolverLivroAssincrono(int id);
+        Task<string> DevolverLivroAssincrono(int id);
     }
 }

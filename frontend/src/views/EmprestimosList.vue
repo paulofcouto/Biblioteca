@@ -6,6 +6,7 @@
                 <tr>
                     <th>Livro</th>
                     <th>Usuário</th>
+                    <th>Data de Retirada</th>
                     <th>Data de Devolução</th>
                     <th style="width:100px">Ações</th>
                 </tr>
@@ -14,8 +15,11 @@
                 <tr v-for="emprestimo in emprestimos" :key="emprestimo.id">
                     <td>{{ emprestimo.tituloLivro }}</td>
                     <td>{{ emprestimo.nomeUsuario }}</td>
-                    <td>{{ emprestimo.dataDeDevolucaoLimite }}</td>
-                    <td><span class="devolver-livro" @click="devolverEmprestimo(emprestimo.id)"><i class="fa fa-undo" aria-hidden="true"></i></span></td>
+                    <td>{{ formatDate(emprestimo.dataDeRetirada) }}</td>
+                    <td>{{ formatDate(emprestimo.dataDeDevolucao) }}</td>
+                    <span v-if="!emprestimo.dataDeDevolucao" class="devolver-livro" @click="devolverEmprestimo(emprestimo.id)">
+                        <i class="fa fa-undo" aria-hidden="true" title="Devolver"></i>
+                    </span>
                 </tr>
             </tbody>
         </table>
@@ -48,6 +52,12 @@
                 </form>
             </div>
         </div>
+        <div v-if="erroModalAberta" class="modal">
+            <div class="conteudo-modal">
+                <span class="close" @click="fecharModalMensagemRetorno">&times;</span>
+                <p style="padding-top: 10px">{{ mensagemErro }}</p>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -55,7 +65,6 @@
 <script>
     import emprestimosService from '../services/emprestimosService';
     import usuariosService from '../services/usuariosService';
-    import livrosService from '../services/livrosService';
 
     export default {
         data() {
@@ -64,6 +73,8 @@
                 usuarios: [],
                 livros: [],
                 modalAberta: false,
+                erroModalAberta : false,
+                mensagemErro : '',
                 novoEmprestimo: {
                     idLivro: '', 
                     idUsuario: '',
@@ -81,7 +92,6 @@
                 try {
                     const response = await emprestimosService.obterTodos();
 
-                    console.log(response.data)
                     this.emprestimos = response.data || [];
                 }
                 catch (error) {
@@ -100,7 +110,7 @@
             },
             async carregarLivros() {
                 try {
-                    const response = await livrosService.obterTodos();
+                    const response = await emprestimosService.obterLivrosDisponiveis();
 
                     this.livros = response.data || [];
                 }
@@ -110,10 +120,16 @@
             },
             async cadastrarEmprestimo() {
                 try {
-                    console.log(this.novoEmprestimo.IdLivro);
-                    console.log(this.novoEmprestimo);
-                    
-                    await emprestimosService.cadastrar(this.novoEmprestimo);
+                    const model = {}
+
+                    model.idLivro = this.novoEmprestimo.idLivro;
+                    model.idUsuario = this.novoEmprestimo.idUsuario;
+
+                    if(this.novoEmprestimo.dataDeDevolucaoLimite){
+                        model.dataDeDevolucaoLimite = this.novoEmprestimo.dataDeDevolucaoLimite;
+                    }
+
+                    await emprestimosService.cadastrar(model);
                    
                     this.fecharModal();
                     
@@ -123,6 +139,7 @@
                         dataDeDevolucaoLimite: ''
                     };
                     await this.carregarEmprestimos();
+                    await this.carregarLivros();
                 }
                 catch (error) {
                     console.error('Erro ao cadastrar empréstimo:', error);
@@ -136,12 +153,28 @@
             },
             async devolverEmprestimo(id) {
                 try {
-                    await emprestimosService.devolver(id);
+                    var retorno = await emprestimosService.devolver(id);
                     await this.carregarEmprestimos();
+                    await this.carregarLivros();
+                    
+                    this.mostrarMensagemRetorno(retorno.data);
                 }
                 catch (error) {
                     console.error('Erro ao devolver empréstimo:', error);
                 }
+            },
+            formatDate(dateString) {
+                if (!dateString) return ''; 
+                const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+                return new Date(dateString).toLocaleDateString(undefined, options);
+            },
+            mostrarMensagemRetorno(mensagem) {
+                this.mensagemErro = mensagem;
+                this.erroModalAberta = true;
+            },
+            fecharModalMensagemRetorno() {
+                this.erroModalAberta = false;
+                this.mensagemErro = '';
             }
         }
     };

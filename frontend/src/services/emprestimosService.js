@@ -5,7 +5,10 @@ const API_URL = 'http://localhost:5000/api/emprestimos';
 
 export default {
     obterTodos() {
-        return axios.get(API_URL);
+        return axios.get(`${API_URL}/obterTodos`);
+    },
+    obterLivrosDisponiveis() {
+        return axios.get(`${API_URL}/obterLivrosDisponiveis`);
     },
     cadastrar(emprestimo) {
         return axios.post(API_URL, emprestimo);

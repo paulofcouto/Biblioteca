@@ -4,7 +4,7 @@ namespace Biblioteca.Application.ViewModel
 {
     public class LivroViewModel
     {
-        public LivroViewModel(int id, string titulo, string autor, string iSBN, int anoDePublicacao, StatusLivroEnum status)
+        public LivroViewModel(int id, string titulo, string autor, string iSBN, int anoDePublicacao, StatusLivroEnum status, bool possuiEmprestimo)
         {
             Id = id;
             Titulo = titulo;
@@ -12,6 +12,7 @@ namespace Biblioteca.Application.ViewModel
             ISBN = iSBN;
             AnoDePublicacao = anoDePublicacao;
             Status = status.ObterDisplayName();
+            PossuiEmprestimo = possuiEmprestimo;
         }
 
         public int Id { get; private set; }
@@ -20,5 +21,6 @@ namespace Biblioteca.Application.ViewModel
         public string ISBN { get; private set; }
         public int AnoDePublicacao { get; private set; }
         public string Status { get; private set; }
+        public bool PossuiEmprestimo { get; set; }
     }
 }

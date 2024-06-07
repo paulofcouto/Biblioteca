@@ -1,6 +1,7 @@
 ﻿using Biblioteca.Core.Entities;
 using Biblioteca.Core.Repository;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Biblioteca.Infrastructure.Persistence.Repositories
 {
@@ -30,7 +31,18 @@ namespace Biblioteca.Infrastructure.Persistence.Repositories
 
         public async Task<List<Livro>> ObterTodosAssincrono(string query)
         {
-            var livros = await _dbContext.Livros.AsNoTracking().ToListAsync();
+            var livrosQuery = _dbContext.Livros
+                .Include(e => e.Emprestimos)
+                .AsNoTracking();
+
+            if (!string.IsNullOrEmpty(query))
+            {
+                Expression<Func<Livro, bool>> filter = l => l.Titulo.Contains(query) || l.Autor.Contains(query);
+
+                livrosQuery = livrosQuery.Where(filter);
+            }
+
+            var livros = await livrosQuery.ToListAsync();
 
             return livros;
         }

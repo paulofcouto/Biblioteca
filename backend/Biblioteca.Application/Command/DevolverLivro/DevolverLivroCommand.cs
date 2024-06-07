@@ -2,7 +2,7 @@
 
 namespace Biblioteca.Application.Command.DevolverLivro
 {
-    public class DevolverLivroCommand : IRequest<Unit>
+    public class DevolverLivroCommand : IRequest<string>
     {
         public DevolverLivroCommand(int id)
         {

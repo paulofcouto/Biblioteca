@@ -2,6 +2,10 @@
 <template>
     <div>
         <h1>Lista de Livros</h1>
+        <div class="pesquisa">
+            <input  type="text" v-model="filtro" placeholder="Pesquisar por título ou autor" @input="filtrarLivros">
+            <button class="botao-padrao" @click="carregarLivros">Pesquisar</button>
+        </div>
         <div>
             <table>
                 <thead>
@@ -21,7 +25,7 @@
                         <td>{{ livro.isbn }}</td>
                         <td>{{ livro.anoDePublicacao }}</td>
                         <td>{{ livro.status }}</td>
-                        <td><span class="icone-deletar" @click="deletarLivro(livro.id)"><i class="fas fa-trash-alt"></i></span></td>
+                        <td v-if="!livro.possuiEmprestimo"><span class="icone-deletar" @click="deletarLivro(livro.id)"><i class="fas fa-trash-alt" title="Deletar"></i></span></td>
                     </tr>
                 </tbody>
             </table>
@@ -55,8 +59,6 @@
                 </form>
             </div>
         </div>
-
-
     </div>
 </template>
 
@@ -73,8 +75,10 @@
                     autor: '',
                     isbn: '',
                     anoDePublicacao: 0,
-                    status : ''
-                }
+                    status : '',
+                    possuiEmprestimo : false
+                },
+                filtro: ''
             };
         },
         async mounted() {
@@ -83,7 +87,7 @@
         methods: {
             async carregarLivros() {
                 try {
-                    const response = await livrosService.obterTodos();
+                    const response = await livrosService.obterTodos(this.filtro);
                     if (response.data && Array.isArray(response.data)) {
                         this.livros = response.data.filter(livro => livro && livro.id);
                     }
@@ -99,7 +103,8 @@
                 try {
                     await livrosService.deletar(id);
                     await this.carregarLivros();
-                } catch (error) {
+                } 
+                catch (error) {
                     console.error('Erro ao deletar livro:', error);
                 }
             },
@@ -120,7 +125,8 @@
                         anoDePublicacao: 0
                     };
                     await this.carregarLivros();
-                } catch (error) {
+                } 
+                catch (error) {
                     console.error('Erro ao cadastrar livro:', error);
                 }
             },
@@ -133,10 +139,3 @@
     };
 </script>
 
-<style>
-    th.acoes,
-    td.acoes {
-        text-align: center;
-        width: 100px; /* Defina uma largura fixa ou ajuste conforme necessário */
-    }
-</style>

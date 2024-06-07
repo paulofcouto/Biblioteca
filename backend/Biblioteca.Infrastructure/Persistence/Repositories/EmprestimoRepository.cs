@@ -43,17 +43,32 @@ namespace Biblioteca.Infrastructure.Persistence.Repositories
             return emprestimos;
         }
 
-        public async Task DevolverLivroAssincrono(int id)
+        public async Task<string> DevolverLivroAssincrono(int id)
         {
-            var livro = await _dbContext.Livros.SingleOrDefaultAsync(p => p.Id == id);
             var emprestimo = await _dbContext.Emprestimos.SingleOrDefaultAsync(p => p.Id == id);
+            
 
-            if (livro != null && emprestimo != null)
+            if(emprestimo != null)
             {
-                emprestimo.DevolverLivro();
-                livro.MarcarDisponivel();
-                await _dbContext.SaveChangesAsync();
+                var livro = await _dbContext.Livros.SingleOrDefaultAsync(p => p.Id == emprestimo.LivroId);
+                
+                if (livro != null)
+                {
+                    emprestimo.DevolverLivro();
+                    livro.MarcarDisponivel();
+                    await _dbContext.SaveChangesAsync();
+
+                    if(emprestimo.DataDeDevolucao.Date > emprestimo.DataDeDevolucaoLimite.Date)
+                    {
+                        var diasEmAtraso = (emprestimo.DataDeDevolucao.Date - emprestimo.DataDeDevolucaoLimite.Date);
+                        return "Devolução realizada com sucesso, porém com " + diasEmAtraso.TotalDays + " dias em atraso.";
+                    }
+
+                    return "Devolução realizada com sucesso";
+                }
             }
+
+            return "Não foi possível concluir a devolução do erro";
         }
     }
 }

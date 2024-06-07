@@ -16,7 +16,7 @@ namespace Biblioteca.Application.Queries.ObterTodosLivros
         {
             var livros = await _livroRepository.ObterTodosAssincrono(request.Query);
 
-            var livrosViewModel = livros.Select(t => new LivroViewModel(t.Id, t.Titulo, t.Autor, t.ISBN, t.AnoDePublicacao, t.Status)).ToList();
+            var livrosViewModel = livros.Select(t => new LivroViewModel(t.Id, t.Titulo, t.Autor, t.ISBN, t.AnoDePublicacao, t.Status, t.Emprestimos.Any())).ToList();
 
             return livrosViewModel;
         }
